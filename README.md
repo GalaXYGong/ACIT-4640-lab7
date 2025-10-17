@@ -51,7 +51,7 @@ terraform apply plan
 
 ## Ansible Commands
 
-The public IP/DNS names must be in `ansible/inventory/hosts.yml` before these commands are run.
+The public IP/DNS names are in `ansible/inventory/hosts.yml` before these commands are run.
 
 ```sh
 # go to ansible directory
@@ -74,9 +74,7 @@ The following screenshot confirms that NGINX is installed and the custom index p
 
 -----
 
-## Clean up Terraform Created Resources
-
-It is **critical** to run these commands after verification to **avoid incurring AWS charges**.
+## Clean up Terraform Created Resources (To Prevent Charges)
 
 ```sh
 # go to terraform directory
