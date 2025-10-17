@@ -1,8 +1,26 @@
 - name: Configure web servers
+  hosts: web
+  become: yes
   tasks:
     - name: Install nginx
+      apt:
+        name: nginx
+        state: present
     - name: create directory structure for web documents
+      file:
+        path: /var/www/html
+        state: directory
     - name: copy nginx conf file to server
+      copy:
+        src: files/nginx.conf
+        dest: /etc/nginx/sites-available/default
     - name: create link to nginx config file to enable it
+      command: nginx -s reload
     - name: Generate index.html file from template
+      template:
+        src: files/index.html.j2
+        dest: /var/www/html/index.html
     - name: reload nginx service
+      service:
+        name: nginx
+        state: reloaded
