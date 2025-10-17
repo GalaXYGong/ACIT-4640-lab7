@@ -4,6 +4,7 @@
   tasks:
     - name: Install nginx
       apt:
+        update_cache: yes
         name: nginx
         state: present
     - name: create directory structure for web documents
@@ -18,7 +19,7 @@
       command: nginx -s reload
     - name: Generate index.html file from template
       template:
-        src: files/index.html.j2
+        src: templates/index.html.j2
         dest: /var/www/html/index.html
     - name: reload nginx service
       service:
