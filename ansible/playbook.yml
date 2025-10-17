@@ -2,26 +2,38 @@
   hosts: web
   become: yes
   tasks:
-    - name: Install nginx
+    - name: Install nginx on both servers
       apt:
         update_cache: yes
         name: nginx
         state: present
-    - name: create directory structure for web documents
+
+    - name: Create directory for index.html file
       file:
-        path: /var/www/html
+        path: /web/html
         state: directory
-    - name: copy nginx conf file to server
+        mode: '0755'
+
+    - name: Copy the nginx.conf file to servers
       copy:
         src: files/nginx.conf
         dest: /etc/nginx/sites-available/default
-    - name: create link to nginx config file to enable it
-      command: nginx -s reload
-    - name: Generate index.html file from template
+        mode: '0644'
+
+    - name: Make a link to enable the nginx config
+      file:
+        src: /etc/nginx/sites-available/default
+        dest: /etc/nginx/sites-enabled/default
+        state: link
+        force: yes
+
+    - name: Create an index.html file from the template
       template:
         src: templates/index.html.j2
-        dest: /var/www/html/index.html
-    - name: reload nginx service
+        dest: /web/html/index.html
+
+    - name: Reload and enable the nginx service
       service:
         name: nginx
         state: reloaded
+        enabled: yes
